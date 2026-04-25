@@ -124,10 +124,12 @@ class GraphService:
                     "name": node["name"],
                     "taluk": node["taluk"],
                     "category": node.get("category"),
+                    "photo_url": node.get("photo_url"),
                     "degree": degree,
                     "degree_centrality": round(degree_centrality.get(node_id, 0.0), 4),
                     "pagerank": round(pagerank.get(node_id, 0.0), 4),
                     "popularity": node.get("popularity"),
+                    "rating": node.get("rating"),
                 }
             )
         return hubs
@@ -204,6 +206,8 @@ class GraphService:
                     "rating": data.get("rating"),
                     "latitude": data.get("latitude"),
                     "longitude": data.get("longitude"),
+                    "photo_url": data.get("photo_url"),
+                    "address": data.get("address"),
                 }
             )
         places.sort(key=lambda item: (item["taluk"], item["name"]))
@@ -225,6 +229,7 @@ class GraphService:
                     "name": neighbor_data["name"],
                     "taluk": neighbor_data["taluk"],
                     "category": neighbor_data.get("category"),
+                    "photo_url": neighbor_data.get("photo_url"),
                     "distance_km": edge.get("distance_km"),
                     "time_car": edge.get("time_car"),
                     "time_bus": edge.get("time_bus"),
@@ -261,6 +266,7 @@ class GraphService:
                     "name": target["name"],
                     "taluk": target["taluk"],
                     "category": target.get("category"),
+                    "photo_url": target.get("photo_url"),
                     "distance_km": edge.get("distance_km"),
                     "travel_time": edge.get(transport_field),
                     "transport": transport,
@@ -269,6 +275,17 @@ class GraphService:
             )
         recommendations.sort(key=lambda item: (item["travel_time"], item["distance_km"]))
         return recommendations[:limit]
+
+    def get_category_summary(self) -> list[dict]:
+        graph, _, _ = self._build_graph()
+        category_counts = Counter(
+            (data.get("category") or "Other")
+            for _, data in graph.nodes(data=True)
+        )
+        return [
+            {"category": category, "places": count}
+            for category, count in category_counts.most_common()
+        ]
 
     def get_metrics(self) -> dict:
         graph, _, _ = self._build_graph()

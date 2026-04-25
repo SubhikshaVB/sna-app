@@ -25,8 +25,13 @@ def taluk_summary():
     return service.get_taluk_summary()
 
 
+@router.get("/category-summary")
+def category_summary():
+    service = GraphService(neo4j_connection.driver())
+    return service.get_category_summary()
+
+
 @router.get("/cross-taluk-links")
 def cross_taluk_links():
     service = GraphService(neo4j_connection.driver())
     return service.get_cross_taluk_links()
-

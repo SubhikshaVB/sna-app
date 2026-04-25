@@ -12,6 +12,7 @@ export const api = {
   summary: () => request("/summary"),
   topHubs: () => request("/top-hubs"),
   talukSummary: () => request("/taluk-summary"),
+  categorySummary: () => request("/category-summary"),
   metrics: () => request("/metrics"),
   networkPreview: () => request("/network-preview?limit=70"),
   places: () => request("/places?limit=200"),
@@ -19,4 +20,3 @@ export const api = {
   recommendations: (nodeId, transport) =>
     request(`/places/${nodeId}/recommendations?transport=${transport}&limit=6`),
 };
-

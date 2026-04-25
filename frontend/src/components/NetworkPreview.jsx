@@ -54,9 +54,12 @@ export default function NetworkPreview({ data }) {
       .map((node) => {
         const fill = TALUK_COLORS[node.taluk] || "#f8fafc";
         const radius = 5 + Math.min(node.degree || 0, 8);
+        const showLabel = (node.degree || 0) >= 7;
         return `
           <g>
+            <circle cx="${node.x}" cy="${node.y}" r="${radius + 4}" fill="${fill}" opacity="0.12" />
             <circle cx="${node.x}" cy="${node.y}" r="${radius}" fill="${fill}" opacity="0.92" />
+            ${showLabel ? `<text x="${node.x + 10}" y="${node.y - 10}" fill="rgba(237,244,255,0.82)" font-size="10" font-family="Manrope">${node.name.slice(0, 18)}</text>` : ""}
             <title>${node.name} (${node.taluk})</title>
           </g>
         `;
@@ -83,12 +86,11 @@ export default function NetworkPreview({ data }) {
       <div className="panel-head">
         <div>
           <p className="eyebrow">Live Network View</p>
-          <h3>Tourism cluster preview</h3>
+          <h3>Relationship map of attractions</h3>
         </div>
-        <p className="muted">High-degree places appear larger in the graph.</p>
+        <p className="muted">Bigger nodes have more links. Labeled nodes are stronger tourism anchors.</p>
       </div>
       <svg ref={svgRef} className="network-svg" />
     </section>
   );
 }
-

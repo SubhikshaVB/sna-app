@@ -3,6 +3,8 @@ import { NavLink } from "react-router-dom";
 const NAV_ITEMS = [
   ["/", "Home"],
   ["/explore", "Explore"],
+  ["/graph", "Graph"],
+  ["/journeys", "Journeys"],
   ["/analytics", "Analytics"],
 ];
 
@@ -34,4 +36,3 @@ export default function Layout({ children }) {
     </div>
   );
 }
-

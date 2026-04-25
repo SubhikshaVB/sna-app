@@ -339,6 +339,9 @@ class GraphService:
                     "category": node.get("category"),
                     "popularity": node.get("popularity") or 0,
                     "degree": graph.degree(node_id),
+                    "latitude": node.get("latitude"),
+                    "longitude": node.get("longitude"),
+                    "photo_url": node.get("photo_url"),
                 }
             )
 

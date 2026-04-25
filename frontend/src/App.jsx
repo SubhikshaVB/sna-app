@@ -4,7 +4,9 @@ import Layout from "./components/Layout";
 import { api } from "./lib/api";
 import AnalyticsPage from "./pages/AnalyticsPage";
 import ExplorePage from "./pages/ExplorePage";
+import GraphPage from "./pages/GraphPage";
 import HomePage from "./pages/HomePage";
+import JourneysPage from "./pages/JourneysPage";
 
 export default function App() {
   const [summary, setSummary] = useState(null);
@@ -138,6 +140,19 @@ export default function App() {
                 />
               }
             />
+            <Route
+              path="/graph"
+              element={
+                <GraphPage
+                  network={network}
+                  places={places}
+                  selectedPlace={selectedPlace}
+                  setSelectedPlace={setSelectedPlace}
+                  placeDetail={placeDetail}
+                />
+              }
+            />
+            <Route path="/journeys" element={<JourneysPage places={places} />} />
             <Route
               path="/analytics"
               element={

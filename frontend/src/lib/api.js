@@ -20,3 +20,10 @@ export const api = {
   recommendations: (nodeId, transport) =>
     request(`/places/${nodeId}/recommendations?transport=${transport}&limit=6`),
 };
+
+export function proxiedImageUrl(photoUrl) {
+  if (!photoUrl) {
+    return "";
+  }
+  return `${API_BASE}/media?url=${encodeURIComponent(photoUrl)}`;
+}

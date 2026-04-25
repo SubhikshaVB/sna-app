@@ -1,4 +1,4 @@
-export default function CategoryStrip({ categories }) {
+export default function CategoryStrip({ categories, onCategoryClick }) {
   return (
     <section className="panel">
       <div className="panel-head">
@@ -9,13 +9,17 @@ export default function CategoryStrip({ categories }) {
       </div>
       <div className="chip-grid">
         {categories.map((item) => (
-          <div key={item.category} className="category-chip">
+          <button
+            key={item.category}
+            type="button"
+            className="category-chip clickable"
+            onClick={() => onCategoryClick?.(item.category)}
+          >
             <strong>{item.category}</strong>
             <span>{item.places} places</span>
-          </div>
+          </button>
         ))}
       </div>
     </section>
   );
 }
-

@@ -1,3 +1,8 @@
+import { useEffect, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
+
+import { proxiedImageUrl } from "../lib/api";
+
 const TRANSPORT_LABELS = {
   car: "Car",
   bus: "Bus",
@@ -11,7 +16,7 @@ function recommendStyle(photoUrl) {
     return {};
   }
   return {
-    backgroundImage: `linear-gradient(180deg, rgba(5,16,28,0.18), rgba(5,16,28,0.92)), url("${photoUrl}")`,
+    backgroundImage: `linear-gradient(180deg, rgba(5,16,28,0.18), rgba(5,16,28,0.92)), url("${proxiedImageUrl(photoUrl)}")`,
   };
 }
 
@@ -24,6 +29,28 @@ export default function ExplorePage({
   placeDetail,
   recommendations,
 }) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const categoryFilter = searchParams.get("category") || "";
+
+  const filteredPlaces = useMemo(() => {
+    if (!categoryFilter) {
+      return places;
+    }
+    return places.filter(
+      (place) => (place.category || "").toLowerCase() === categoryFilter.toLowerCase()
+    );
+  }, [places, categoryFilter]);
+
+  useEffect(() => {
+    if (!filteredPlaces.length) {
+      return;
+    }
+    const exists = filteredPlaces.some((place) => place.node_id === selectedPlace);
+    if (!exists) {
+      setSelectedPlace(filteredPlaces[0].node_id);
+    }
+  }, [filteredPlaces, selectedPlace, setSelectedPlace]);
+
   return (
     <>
       <section className="page-hero">
@@ -33,6 +60,18 @@ export default function ExplorePage({
           Pick any attraction and instantly see nearby places, travel time by transport mode, and
           practical next-hop suggestions powered by the graph.
         </p>
+        {categoryFilter ? (
+          <div className="hero-badges">
+            <span>Category filter: {categoryFilter}</span>
+            <button
+              type="button"
+              className="ghost-button"
+              onClick={() => setSearchParams({})}
+            >
+              Clear filter
+            </button>
+          </div>
+        ) : null}
       </section>
 
       <section className="two-up">
@@ -47,7 +86,7 @@ export default function ExplorePage({
             <label>
               Attraction
               <select value={selectedPlace} onChange={(e) => setSelectedPlace(e.target.value)}>
-                {places.map((place) => (
+                {filteredPlaces.map((place) => (
                   <option key={place.node_id} value={place.node_id}>
                     {place.name} · {place.taluk}
                   </option>
@@ -131,4 +170,3 @@ export default function ExplorePage({
     </>
   );
 }
-

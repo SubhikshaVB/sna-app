@@ -1,9 +1,11 @@
+import { proxiedImageUrl } from "../lib/api";
+
 function cardStyle(photoUrl) {
   if (!photoUrl) {
     return {};
   }
   return {
-    backgroundImage: `linear-gradient(180deg, rgba(5,16,28,0.12), rgba(5,16,28,0.92)), url("${photoUrl}")`,
+    backgroundImage: `linear-gradient(180deg, rgba(5,16,28,0.12), rgba(5,16,28,0.92)), url("${proxiedImageUrl(photoUrl)}")`,
   };
 }
 
@@ -38,4 +40,3 @@ export default function PlaceGallery({ places, title, eyebrow }) {
     </section>
   );
 }
-

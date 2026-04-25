@@ -3,8 +3,11 @@ import NetworkPreview from "../components/NetworkPreview";
 import PlaceGallery from "../components/PlaceGallery";
 import SummaryCards from "../components/SummaryCards";
 import TopHubsTable from "../components/TopHubsTable";
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage({ summary, hubs, network, taluks, categories, featuredPlaces }) {
+  const navigate = useNavigate();
+
   return (
     <>
       <section className="hero hero-home">
@@ -35,7 +38,10 @@ export default function HomePage({ summary, hubs, network, taluks, categories, f
       </section>
 
       <SummaryCards summary={summary} />
-      <CategoryStrip categories={categories.slice(0, 8)} />
+      <CategoryStrip
+        categories={categories.slice(0, 8)}
+        onCategoryClick={(category) => navigate(`/explore?category=${encodeURIComponent(category)}`)}
+      />
 
       <section className="feature-grid">
         <article className="feature-card">
@@ -96,4 +102,3 @@ export default function HomePage({ summary, hubs, network, taluks, categories, f
     </>
   );
 }
-
